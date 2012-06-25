@@ -1,6 +1,5 @@
 package escolme.academico.modelo.negocio;
 
-import escolme.academico.modelo.entidades.PagoLiquidacionAC;
 import escolme.academico.modelo.entidades.TipoPagoLiquidacionAC;
 import escolme.vortal.modelo.negocio.UsuarioBO;
 import java.sql.Connection;
