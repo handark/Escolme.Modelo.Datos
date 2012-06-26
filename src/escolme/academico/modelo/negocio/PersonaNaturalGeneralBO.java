@@ -5,7 +5,6 @@
 
 package escolme.academico.modelo.negocio;
 
-import escolme.academico.modelo.entidades.PeriodoUniversidadAC;
 import escolme.academico.modelo.entidades.PersonaNaturalGeneralAC;
 import escolme.vortal.modelo.negocio.UsuarioBO;
 import java.sql.Connection;
@@ -21,7 +20,30 @@ import java.util.logging.Logger;
  */
 public class PersonaNaturalGeneralBO {
 
-    public static PersonaNaturalGeneralAC CargarPersonaPorPegeId(int PEGE_ID){
+    public static PersonaNaturalGeneralAC CargarPersonaPorIdentificacion(String PEGE_DOCUMENTOIDENTIDAD){
+        PersonaNaturalGeneralAC persona = null;
+        Connection c =null;
+        long PEGE_ID = 0;
+        try{
+            String sql = "SELECT PEGE_ID FROM GENERAL.PERSONAGENERAL WHERE GENERAL.PERSONAGENERAL.PEGE_DOCUMENTOIDENTIDAD='" + PEGE_DOCUMENTOIDENTIDAD + "'";
+            c = ConexionAcademicoDB.AbrirConexion();
+            PreparedStatement ps = c.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+               PEGE_ID = rs.getLong("PEGE_ID");
+            }        
+            persona = CargarPersonaPorPegeId(PEGE_ID);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(UsuarioBO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+             ConexionAcademicoDB.CerrarConexion(c);
+            return persona;
+        }
+    }
+    
+    public static PersonaNaturalGeneralAC CargarPersonaPorPegeId(long PEGE_ID){
         PersonaNaturalGeneralAC persona = null;
         Connection c =null;
         try{

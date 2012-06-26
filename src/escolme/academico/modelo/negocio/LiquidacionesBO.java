@@ -62,14 +62,16 @@ public class LiquidacionesBO {
         }       
     }
     
-    public static List<LiquidacionAC> ListarLiquidacionesPorPersona(int ESTP_ID){
+    public static List<LiquidacionAC> ListarLiquidacionesPorPersona(long PEGE_ID){
         List<LiquidacionAC> liquidaciones = null; LiquidacionAC liquidacion;
         Connection c =null;
         try {
             liquidaciones = new ArrayList<LiquidacionAC>();
-            String sql = "SELECT ACADEMICO.LIQUIDACION.*,ACADEMICO.PERIODOUNIVERSIDAD.* FROM ACADEMICO.LIQUIDACION INNER JOIN ACADEMICO.PERIODOUNIVERSIDAD " + 
-                    "ON ACADEMICO.LIQUIDACION.PEUN_ID=ACADEMICO.PERIODOUNIVERSIDAD.PEUN_ID WHERE ACADEMICO.LIQUIDACION.ESTP_ID='" + ESTP_ID + "' "
-                    + "ORDER BY ACADEMICO.LIQUIDACION.LIQU_FECHACAMBIO DESC";
+            String sql = "SELECT ACADEMICO.LIQUIDACION.*,ACADEMICO.PERIODOUNIVERSIDAD.* " +
+                    "FROM (ACADEMICO.LIQUIDACION INNER JOIN ACADEMICO.PERIODOUNIVERSIDAD ON ACADEMICO.LIQUIDACION.PEUN_ID=ACADEMICO.PERIODOUNIVERSIDAD.PEUN_ID)" +
+                    "INNER JOIN ACADEMICO.ESTUDIANTEPENSUM ON ACADEMICO.LIQUIDACION.ESTP_ID = ACADEMICO.ESTUDIANTEPENSUM.ESTP_ID" +
+                        "WHERE ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID='" + PEGE_ID + "'" +
+                        "ORDER BY ACADEMICO.LIQUIDACION.LIQU_FECHACAMBIO DESC";
             c = ConexionAcademicoDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
