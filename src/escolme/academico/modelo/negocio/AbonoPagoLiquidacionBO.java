@@ -23,7 +23,7 @@ public class AbonoPagoLiquidacionBO {
         Connection c =null;
         try {
             String sql = "INSERT INTO(ABPL_ID,PALI_ID,LIQU_ID,ABPL_VALOR,ABPL_FECHA,ABPL_OBSERVACION) " + 
-                            " VALUES(?,?,?,?,?,?)";
+                            " VALUES(?,?,?,?,?,?,?)";
             c = ConexionAcademicoDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setLong(1, abono.getABPL_ID());
@@ -32,6 +32,7 @@ public class AbonoPagoLiquidacionBO {
             ps.setFloat(4, abono.getABPL_VALOR());
             ps.setDate(5, abono.getABPL_FECHA());
             ps.setString(6, abono.getABPL_OBSERVACION());
+            ps.setLong(7, abono.getTIPA_ID());
             ResultSet rs = ps.executeQuery();
             resultado = new MensajesAjaxAY();
             resultado.setID(String.valueOf(abono.getABPL_ID()));
@@ -76,6 +77,7 @@ public class AbonoPagoLiquidacionBO {
         abono.setABPL_VALOR(rs.getFloat("ABPL_VALOR"));
         abono.setABPL_FECHA(rs.getDate("ABPL_FECHA"));
         abono.setABPL_OBSERVACION(rs.getString("ABPL_OBSERVACION"));
+        abono.setTIPA_ID(rs.getLong("TIPA_ID"));
         return abono;
     }
     

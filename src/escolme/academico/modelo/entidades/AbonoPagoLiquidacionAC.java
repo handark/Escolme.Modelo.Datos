@@ -15,6 +15,7 @@ public class AbonoPagoLiquidacionAC {
     private float ABPL_VALOR;
     private Date ABPL_FECHA;
     private String ABPL_OBSERVACION;
+    private long TIPA_ID;
 
     public long getABPL_ID() {
         return ABPL_ID;
@@ -62,6 +63,14 @@ public class AbonoPagoLiquidacionAC {
 
     public void setABPL_OBSERVACION(String ABPL_OBSERVACION) {
         this.ABPL_OBSERVACION = ABPL_OBSERVACION;
+    }
+
+    public long getTIPA_ID() {
+        return TIPA_ID;
+    }
+
+    public void setTIPA_ID(long TIPA_ID) {
+        this.TIPA_ID = TIPA_ID;
     }
     
 }
