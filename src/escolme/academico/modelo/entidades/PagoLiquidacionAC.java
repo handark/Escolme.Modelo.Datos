@@ -1,6 +1,7 @@
 package escolme.academico.modelo.entidades;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 /**
  * @author Jose Luis Orozco Mejia
