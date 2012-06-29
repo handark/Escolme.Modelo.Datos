@@ -1,6 +1,8 @@
 package escolme.academico.modelo.negocio;
 
+import escolme.academico.modelo.entidades.AbonoPagoLiquidacionAC;
 import escolme.academico.modelo.entidades.PagoLiquidacionAC;
+import escolme.modelo.ayudas.MensajesAjaxAY;
 import escolme.vortal.modelo.negocio.UsuarioBO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,6 +19,40 @@ import java.util.logging.Logger;
  */
 public class PagoLiquidacionBO {
 
+    public static MensajesAjaxAY GuardarPagoLiquidacion(PagoLiquidacionAC pago){
+        MensajesAjaxAY resultado = null;
+        Connection c =null;
+        try {
+            long id = ComunBO.GenerarLongID("PAGOLIQUIDACION", "PALI_ID");
+            String sql = "INSERT INTO PAGOLIQUIDACION(PALI_ID,LIQU_ID,PALI_VALOR,PALI_FECHA,PALI_ESTADO,PALI_REGISTRADOPOR,PALI_FECHACAMBIO,TIPL_ID,PALI_OBSERVACIONES) " + 
+                            "VALUES(?,?,?,?,?,?,?,?,?)";
+            c = ConexionAcademicoDB.AbrirConexion();
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setLong(1, id);
+            ps.setLong(2, pago.getLIQU_ID());
+            ps.setFloat(3, pago.getPALI_VALOR());
+            ps.setDate(4, pago.getPALI_FECHA());
+            ps.setString(5, pago.getPALI_ESTADO());
+            ps.setString(6, pago.getPALI_REGISTRADOPOR());
+            ps.setDate(7, pago.getPALI_FECHACAMBIO());
+            ps.setLong(8, pago.getTIPL_ID());
+            ps.setString(9, pago.getPALI_OBSERVACIONES());
+            ps.executeUpdate();
+            resultado = new MensajesAjaxAY();
+            resultado.setID(String.valueOf(id));
+            resultado.setMENSAJE("Pago de Liquidacion agregado con exito");
+        }
+        catch(SQLException ex){
+            resultado = new MensajesAjaxAY();
+            resultado.setID("0");
+            resultado.setMENSAJE("Error al guardar pago: <br>" + ex.getMessage());
+        }
+        finally{
+            ConexionAcademicoDB.CerrarConexion(c);
+            return resultado;
+        }
+    }    
+    
     public static List<PagoLiquidacionAC> ListarPagosPorLiquidacion(long LIQU_ID){
         List<PagoLiquidacionAC> liquidaciones = null;
         Connection c =null;
