@@ -18,6 +18,7 @@ public class PagoLiquidacionAC {
     private Date PALI_FECHACAMBIO;
     private long TIPL_ID;
     private String PALI_OBSERVACIONES;
+    private String PALI_VALORLETRA;
 
     private String TIPL_DESCRIPCION;
     
@@ -99,6 +100,14 @@ public class PagoLiquidacionAC {
 
     public void setTIPL_DESCRIPCION(String TIPL_DESCRIPCION) {
         this.TIPL_DESCRIPCION = TIPL_DESCRIPCION;
+    }
+
+    public String getPALI_VALORLETRA() {
+        return PALI_VALORLETRA;
+    }
+
+    public void setPALI_VALORLETRA(String PALI_VALORLETRA) {
+        this.PALI_VALORLETRA = PALI_VALORLETRA;
     }
     
 }

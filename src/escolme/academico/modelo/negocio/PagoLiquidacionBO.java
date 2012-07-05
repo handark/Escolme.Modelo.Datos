@@ -1,15 +1,17 @@
 package escolme.academico.modelo.negocio;
 
-import escolme.academico.modelo.entidades.AbonoPagoLiquidacionAC;
 import escolme.academico.modelo.entidades.PagoLiquidacionAC;
 import escolme.modelo.ayudas.MensajesAjaxAY;
+import escolme.modelo.ayudas.Numero_a_Letra;
 import escolme.vortal.modelo.negocio.UsuarioBO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +24,7 @@ public class PagoLiquidacionBO {
     public static MensajesAjaxAY GuardarPagoLiquidacion(PagoLiquidacionAC pago){
         MensajesAjaxAY resultado = null;
         Connection c =null;
+        NumberFormat formato = NumberFormat.getInstance(Locale.ENGLISH);
         try {
             long id = ComunBO.GenerarLongID("PAGOLIQUIDACION", "PALI_ID");
             String sql = "INSERT INTO PAGOLIQUIDACION(PALI_ID,LIQU_ID,PALI_VALOR,PALI_FECHA,PALI_ESTADO,PALI_REGISTRADOPOR,PALI_FECHACAMBIO,TIPL_ID,PALI_OBSERVACIONES) " + 
@@ -38,9 +41,23 @@ public class PagoLiquidacionBO {
             ps.setLong(8, pago.getTIPL_ID());
             ps.setString(9, pago.getPALI_OBSERVACIONES());
             ps.executeUpdate();
+            
+            String estado = "PAGADO";
+            if(pago.getTIPL_ID() == 405){
+                estado = "CARTERA";
+            }
+            
+            sql = "UPDATE ACADEMICO.LIQUIDACION SET LIQU_ESTADO=?,LIQU_VALORPAGADO=LIQU_VALORPAGADO + ? WHERE LIQU_ID=?";
+            ps = c.prepareStatement(sql);
+            ps.setString(1, estado);
+            ps.setFloat(2, pago.getPALI_VALOR());
+            ps.setLong(3, pago.getLIQU_ID());
+            ps.executeUpdate();
+            
             resultado = new MensajesAjaxAY();
             resultado.setID(String.valueOf(id));
-            resultado.setMENSAJE("Pago de Liquidacion agregado con exito");
+            resultado.setMENSAJE(String.format("%s Liquidacion por valor de $%s agregado con exito",
+                    "CARTERA".equals(estado) ? "Abono a la":"Pago de",formato.format(pago.getPALI_VALOR())));
         }
         catch(SQLException ex){
             resultado = new MensajesAjaxAY();
@@ -52,6 +69,26 @@ public class PagoLiquidacionBO {
             return resultado;
         }
     }    
+    
+    public static PagoLiquidacionAC CargarPagoPorID(long PALI_ID){
+        PagoLiquidacionAC liquidacion = null;
+        Connection c =null;
+        try {
+            liquidacion = new PagoLiquidacionAC();
+            String sql = "SELECT PAGOLIQUIDACION.*,TIPOPAGOLIQUIDACION.TIPL_DESCRIPCION FROM PAGOLIQUIDACION INNER JOIN TIPOPAGOLIQUIDACION ON PAGOLIQUIDACION.TIPL_ID=TIPOPAGOLIQUIDACION.TIPL_ID WHERE PAGOLIQUIDACION.PALI_ID='" + String.valueOf(PALI_ID) + "'";
+            c = ConexionAcademicoDB.AbrirConexion();
+            PreparedStatement ps = c.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+              liquidacion = MapeoLiquidacion(rs);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioBO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConexionAcademicoDB.CerrarConexion(c);
+            return liquidacion;
+        }      
+    }
     
     public static List<PagoLiquidacionAC> ListarPagosPorLiquidacion(long LIQU_ID){
         List<PagoLiquidacionAC> liquidaciones = null;
@@ -74,6 +111,7 @@ public class PagoLiquidacionBO {
     }
     
      public static PagoLiquidacionAC MapeoLiquidacion(ResultSet rs) throws SQLException{
+        Numero_a_Letra NumLetra = new Numero_a_Letra();
         PagoLiquidacionAC periodo = new PagoLiquidacionAC();
         periodo.setLIQU_ID(rs.getLong("LIQU_ID"));
         periodo.setPALI_ESTADO(rs.getString("PALI_ESTADO"));
@@ -85,6 +123,7 @@ public class PagoLiquidacionBO {
         periodo.setTIPL_ID(rs.getLong("TIPL_ID"));
         periodo.setPALI_OBSERVACIONES(rs.getString("PALI_OBSERVACIONES"));
         periodo.setTIPL_DESCRIPCION(rs.getString("TIPL_DESCRIPCION"));
+        periodo.setPALI_VALORLETRA(NumLetra.Convertir(String.valueOf(periodo.getPALI_VALOR()),true));
         return periodo;
     }
     
