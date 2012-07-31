@@ -67,9 +67,10 @@ public class LiquidacionesBO {
         Connection c =null;
         try {
             liquidaciones = new ArrayList<LiquidacionAC>();
-            String sql = "SELECT ACADEMICO.LIQUIDACION.*,ACADEMICO.PERIODOUNIVERSIDAD.* " +
-                    "FROM (ACADEMICO.LIQUIDACION INNER JOIN ACADEMICO.PERIODOUNIVERSIDAD ON ACADEMICO.LIQUIDACION.PEUN_ID=ACADEMICO.PERIODOUNIVERSIDAD.PEUN_ID) " +
-                    "INNER JOIN ACADEMICO.ESTUDIANTEPENSUM ON ACADEMICO.LIQUIDACION.ESTP_ID = ACADEMICO.ESTUDIANTEPENSUM.ESTP_ID " +
+            String sql = "SELECT ACADEMICO.LIQUIDACION.*,ACADEMICO.PERIODOUNIVERSIDAD.*,ACADEMICO.LIQUIDACIONADJUNTO.LIAD_ARCHIVO " +
+                    "FROM (((ACADEMICO.LIQUIDACION INNER JOIN ACADEMICO.PERIODOUNIVERSIDAD ON ACADEMICO.LIQUIDACION.PEUN_ID=ACADEMICO.PERIODOUNIVERSIDAD.PEUN_ID) " +
+                    "INNER JOIN ACADEMICO.ESTUDIANTEPENSUM ON ACADEMICO.LIQUIDACION.ESTP_ID = ACADEMICO.ESTUDIANTEPENSUM.ESTP_ID) " +
+                    "INNER JOIN GENERAL.PERSONAGENERAL ON ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID=GENERAL.PERSONAGENERAL.PEGE_ID) LEFT OUTER JOIN ACADEMICO.LIQUIDACIONADJUNTO ON GENERAL.PERSONAGENERAL.PEGE_ID=ACADEMICO.LIQUIDACIONADJUNTO.PEGE_ID " +
                         "WHERE ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID='" + PEGE_ID + "'" +
                         " ORDER BY ACADEMICO.LIQUIDACION.LIQU_FECHACAMBIO DESC";
             c = ConexionAcademicoDB.AbrirConexion();
@@ -116,10 +117,11 @@ public class LiquidacionesBO {
             LIQU_ESTADO = "TODO".equals(LIQU_ESTADO) ? "":LIQU_ESTADO;
             liquidaciones = new ArrayList<LiquidacionAC>();
             String sql = "SELECT ACADEMICO.LIQUIDACION.*,ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID,GENERAL.PERSONANATURALGENERAL.PENG_EMAILINSTITUCIONAL," +
-                         "GENERAL.PERSONANATURALGENERAL.PENG_PRIMERNOMBRE,GENERAL.PERSONANATURALGENERAL.PENG_PRIMERAPELLIDO" +
-                         " FROM (ACADEMICO.LIQUIDACION INNER JOIN ACADEMICO.ESTUDIANTEPENSUM" +
+                         "GENERAL.PERSONANATURALGENERAL.PENG_PRIMERNOMBRE,GENERAL.PERSONANATURALGENERAL.PENG_PRIMERAPELLIDO,ACADEMICO.LIQUIDACIONADJUNTO.LIAD_ARCHIVO" +
+                         " FROM (((ACADEMICO.LIQUIDACION INNER JOIN ACADEMICO.ESTUDIANTEPENSUM" +
                          " ON ACADEMICO.LIQUIDACION.ESTP_ID=ACADEMICO.ESTUDIANTEPENSUM.ESTP_ID) INNER JOIN GENERAL.PERSONANATURALGENERAL ON " +
-                         "ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID=GENERAL.PERSONANATURALGENERAL.PEGE_ID " +
+                         "ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID=GENERAL.PERSONANATURALGENERAL.PEGE_ID) " +
+                         "INNER JOIN GENERAL.PERSONAGENERAL ON GENERAL.PERSONANATURALGENERAL.PEGE_ID=GENERAL.PERSONAGENERAL.PEGE_ID) LEFT OUTER JOIN ACADEMICO.LIQUIDACIONADJUNTO ON GENERAL.PERSONAGENERAL.PEGE_ID=ACADEMICO.LIQUIDACIONADJUNTO.PEGE_ID " +
                          "WHERE ACADEMICO.LIQUIDACION.PEUN_ID='" + String.valueOf(PEUN_ID) + "' AND ACADEMICO.LIQUIDACION.LIQU_ESTADO LIKE '%" + LIQU_ESTADO + "%' " +
                          "ORDER BY GENERAL.PERSONANATURALGENERAL.PENG_PRIMERNOMBRE,GENERAL.PERSONANATURALGENERAL.PENG_PRIMERAPELLIDO ASC";
             c = ConexionAcademicoDB.AbrirConexion();
@@ -137,35 +139,37 @@ public class LiquidacionesBO {
     }
     
     public static LiquidacionAC MapeoLiquidacion(ResultSet rs) throws SQLException{
-        LiquidacionAC periodo = new LiquidacionAC();
-        periodo.setLIQU_ID(rs.getLong("LIQU_ID"));
-        periodo.setLIQU_TOTALLIQUIDADO(rs.getFloat("LIQU_TOTALLIQUIDADO"));
-        periodo.setLIQU_TOTALDESCUENTO(rs.getFloat("LIQU_TOTALDESCUENTO"));
-        periodo.setLIQU_FECHAPAGO(rs.getDate("LIQU_FECHAPAGO"));
-        periodo.setLIQU_FECHACAMBIO(rs.getDate("LIQU_FECHACAMBIO"));
-        periodo.setESTP_ID(rs.getLong("ESTP_ID"));
-        periodo.setTIPL_ID(rs.getLong("TIPL_ID"));
-        periodo.setLIQU_ESTADO(rs.getString("LIQU_ESTADO"));
-        periodo.setLIQU_SALDOAFAVOR(rs.getFloat("LIQU_SALDOAFAVOR"));
-        periodo.setLIQU_REGISTRADOPOR(rs.getString("LIQU_REGISTRADOPOR"));
-        periodo.setLIQU_SALDOENCONTRA(rs.getFloat("LIQU_SALDOENCONTRA"));
-        periodo.setLIQU_REFERENCIA(rs.getString("LIQU_REFERENCIA"));
-        periodo.setPEUN_ID(rs.getLong("PEUN_ID"));
-        periodo.setUNID_ID(rs.getLong("UNID_ID"));
-        periodo.setLIQU_NUMEROCUOTA(rs.getString("LIQU_NUMEROCUOTA"));
-        periodo.setLIQU_NIVELLIQUIDACION(rs.getString("LIQU_NIVELLIQUIDACION"));
-        periodo.setLIQU_FECHASPROPIAS(rs.getString("LIQU_FECHASPROPIAS"));
-        periodo.setFINA_ID(rs.getLong("FINA_ID"));
-        periodo.setLIQU_VALORPAGADO(rs.getFloat("LIQU_VALORPAGADO"));
-        periodo.setLIQU_VALORANTICIPO(rs.getFloat("LIQU_VALORANTICIPO"));
-        periodo.setLIQU_VALORCUOTAORIGINAL(rs.getFloat("LIQU_VALORCUOTAORIGINAL"));
-        periodo.setLIQU_TIPOLIQUIDACION(rs.getString("LIQU_TIPOLIQUIDACION"));
+        LiquidacionAC liquidacion = new LiquidacionAC();
+        liquidacion.setLIQU_ID(rs.getLong("LIQU_ID"));
+        liquidacion.setLIQU_TOTALLIQUIDADO(rs.getFloat("LIQU_TOTALLIQUIDADO"));
+        liquidacion.setLIQU_TOTALDESCUENTO(rs.getFloat("LIQU_TOTALDESCUENTO"));
+        liquidacion.setLIQU_FECHAPAGO(rs.getDate("LIQU_FECHAPAGO"));
+        liquidacion.setLIQU_FECHACAMBIO(rs.getDate("LIQU_FECHACAMBIO"));
+        liquidacion.setESTP_ID(rs.getLong("ESTP_ID"));
+        liquidacion.setTIPL_ID(rs.getLong("TIPL_ID"));
+        liquidacion.setLIQU_ESTADO(rs.getString("LIQU_ESTADO"));
+        liquidacion.setLIQU_SALDOAFAVOR(rs.getFloat("LIQU_SALDOAFAVOR"));
+        liquidacion.setLIQU_REGISTRADOPOR(rs.getString("LIQU_REGISTRADOPOR"));
+        liquidacion.setLIQU_SALDOENCONTRA(rs.getFloat("LIQU_SALDOENCONTRA"));
+        liquidacion.setLIQU_REFERENCIA(rs.getString("LIQU_REFERENCIA"));
+        liquidacion.setPEUN_ID(rs.getLong("PEUN_ID"));
+        liquidacion.setUNID_ID(rs.getLong("UNID_ID"));
+        liquidacion.setLIQU_NUMEROCUOTA(rs.getString("LIQU_NUMEROCUOTA"));
+        liquidacion.setLIQU_NIVELLIQUIDACION(rs.getString("LIQU_NIVELLIQUIDACION"));
+        liquidacion.setLIQU_FECHASPROPIAS(rs.getString("LIQU_FECHASPROPIAS"));
+        liquidacion.setFINA_ID(rs.getLong("FINA_ID"));
+        liquidacion.setLIQU_VALORPAGADO(rs.getFloat("LIQU_VALORPAGADO"));
+        liquidacion.setLIQU_VALORANTICIPO(rs.getFloat("LIQU_VALORANTICIPO"));
+        liquidacion.setLIQU_VALORCUOTAORIGINAL(rs.getFloat("LIQU_VALORCUOTAORIGINAL"));
+        liquidacion.setLIQU_TIPOLIQUIDACION(rs.getString("LIQU_TIPOLIQUIDACION"));
         
-        periodo.setPENG_EMAILINSTITUCIONAL(rs.getString("PENG_EMAILINSTITUCIONAL"));
-        periodo.setPENG_PRIMERNOMBRE(rs.getString("PENG_PRIMERNOMBRE"));
-        periodo.setPENG_PRIMERAPELLIDO(rs.getString("PENG_PRIMERAPELLIDO"));
-        periodo.setPEGE_ID(rs.getInt("PEGE_ID"));
-        return periodo;
+        liquidacion.setPENG_EMAILINSTITUCIONAL(rs.getString("PENG_EMAILINSTITUCIONAL"));
+        liquidacion.setPENG_PRIMERNOMBRE(rs.getString("PENG_PRIMERNOMBRE"));
+        liquidacion.setPENG_PRIMERAPELLIDO(rs.getString("PENG_PRIMERAPELLIDO"));
+        liquidacion.setPEGE_ID(rs.getInt("PEGE_ID"));
+        
+        liquidacion.setLIAD_ARCHIVO(rs.getString("LIAD_ARCHIVO"));
+        return liquidacion;
     }
     
 }

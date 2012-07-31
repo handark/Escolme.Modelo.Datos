@@ -36,6 +36,7 @@ public class LiquidacionAC {
     private String PENG_PRIMERNOMBRE;
     private String PENG_PRIMERAPELLIDO;
     private int PEGE_ID;
+    private String LIAD_ARCHIVO;
 
     public long getLIQU_ID() {
         return LIQU_ID;
@@ -243,5 +244,13 @@ public class LiquidacionAC {
 
     public void setPEGE_ID(int PEGE_ID) {
         this.PEGE_ID = PEGE_ID;
+    }
+
+    public String getLIAD_ARCHIVO() {
+        return LIAD_ARCHIVO;
+    }
+
+    public void setLIAD_ARCHIVO(String LIAD_ARCHIVO) {
+        this.LIAD_ARCHIVO = LIAD_ARCHIVO;
     }
 }
