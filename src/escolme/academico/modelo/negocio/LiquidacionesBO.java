@@ -66,7 +66,7 @@ public class LiquidacionesBO {
         List<LiquidacionAC> liquidaciones = null; LiquidacionAC liquidacion;
         Connection c =null;
         try {
-            liquidaciones = new ArrayList<LiquidacionAC>();
+            liquidaciones = new ArrayList<>();
             String sql = "SELECT ACADEMICO.LIQUIDACION.*,ACADEMICO.PERIODOUNIVERSIDAD.*,ACADEMICO.LIQUIDACIONADJUNTO.LIAD_ARCHIVO " +
                     "FROM (((ACADEMICO.LIQUIDACION INNER JOIN ACADEMICO.PERIODOUNIVERSIDAD ON ACADEMICO.LIQUIDACION.PEUN_ID=ACADEMICO.PERIODOUNIVERSIDAD.PEUN_ID) " +
                     "INNER JOIN ACADEMICO.ESTUDIANTEPENSUM ON ACADEMICO.LIQUIDACION.ESTP_ID = ACADEMICO.ESTUDIANTEPENSUM.ESTP_ID) " +
@@ -115,7 +115,7 @@ public class LiquidacionesBO {
         Connection c =null;
         try {
             LIQU_ESTADO = "TODO".equals(LIQU_ESTADO) ? "":LIQU_ESTADO;
-            liquidaciones = new ArrayList<LiquidacionAC>();
+            liquidaciones = new ArrayList<>();
             String sql = "SELECT ACADEMICO.LIQUIDACION.*,ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID,GENERAL.PERSONANATURALGENERAL.PENG_EMAILINSTITUCIONAL," +
                          "GENERAL.PERSONANATURALGENERAL.PENG_PRIMERNOMBRE,GENERAL.PERSONANATURALGENERAL.PENG_PRIMERAPELLIDO,ACADEMICO.LIQUIDACIONADJUNTO.LIAD_ARCHIVO" +
                          " FROM (((ACADEMICO.LIQUIDACION INNER JOIN ACADEMICO.ESTUDIANTEPENSUM" +
