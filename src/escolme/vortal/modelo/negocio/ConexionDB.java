@@ -23,7 +23,8 @@ public class ConexionDB {
 
     
     private ConexionDB(){
-        CadenaConexion = "jdbc:postgresql://10.10.1.12:5432/escolme?user=postgres&password=Escolme2008";
+        //CadenaConexion = "jdbc:postgresql://10.10.1.12:5432/escolme?user=postgres&password=Escolme2008";
+        CadenaConexion = "jdbc:postgresql://127.0.0.1:5432/escolme?user=postgres&password=juanita";
     }
     
     public static Connection AbrirConexion() throws ClassNotFoundException{
