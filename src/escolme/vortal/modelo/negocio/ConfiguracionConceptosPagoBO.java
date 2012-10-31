@@ -2,7 +2,6 @@ package escolme.vortal.modelo.negocio;
 
 import escolme.modelo.ayudas.MensajesAjaxAY;
 import escolme.vortal.modelo.entidades.ConfiguracionConceptosPagoVO;
-import escolme.vortal.modelo.entidades.ConfiguracionTipoDocumentosVO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,16 +13,38 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author jose
+ * @author Jose Luis Orozco Mejia
  */
 public class ConfiguracionConceptosPagoBO {
 
+    public static List<ConfiguracionConceptosPagoVO> ListarConfiguracionConceptosPagoPorTipoDocumento(long contipdoc_id){
+        List<ConfiguracionConceptosPagoVO> listaConceptospago = null; ConfiguracionConceptosPagoVO conceptopago;
+        Connection c =null;
+        try{
+            listaConceptospago = new ArrayList<>();
+            String sql = "SELECT a.conconpag_id,a.contipdoc_id,a.conconpag_nombre,a.conconpag_estado,b.contipdoc_nombre " +
+                    "FROM campusadmin.configuracion_conceptosapago a INNER JOIN campusadmin.configuracion_tipodocumentos b " +
+                    "ON a.contipdoc_id=b.contipdoc_id WHERE a.conconpag_estado=1 AND a.contipdoc_id=" + String.valueOf(contipdoc_id) + " ORDER BY a.conconpag_nombre";
+            c = ConexionDB.AbrirConexion();
+            PreparedStatement ps = c.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                listaConceptospago.add(MapeoConceptosPago(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConfiguracionConceptosPagoBO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConexionDB.CerrarConexion(c);
+            return listaConceptospago;
+        }
+    }   
+    
     public static List<ConfiguracionConceptosPagoVO> ListarConfiguracionConceptosPagoActivos(){
         List<ConfiguracionConceptosPagoVO> listaConceptospago = null; ConfiguracionConceptosPagoVO conceptopago;
         Connection c =null;
         try{
             listaConceptospago = new ArrayList<>();
-            String sql = "SELECT a.conconpag_id,a.contipdoc_id,a.conconpag_nombre,a.conconpag_estado " +
+            String sql = "SELECT a.conconpag_id,a.contipdoc_id,a.conconpag_nombre,a.conconpag_estado,b.contipdoc_nombre " +
                     "FROM campusadmin.configuracion_conceptosapago a INNER JOIN campusadmin.configuracion_tipodocumentos b " +
                     "ON a.contipdoc_id=b.contipdoc_id WHERE a.conconpag_estado=1 ORDER BY a.conconpag_nombre";
             c = ConexionDB.AbrirConexion();
@@ -45,7 +66,7 @@ public class ConfiguracionConceptosPagoBO {
         Connection c =null;
         try{
             listaConceptospago = new ArrayList<>();
-            String sql = "SELECT a.conconpag_id,a.contipdoc_id,a.conconpag_nombre,a.conconpag_estado " +
+            String sql = "SELECT a.conconpag_id,a.contipdoc_id,a.conconpag_nombre,a.conconpag_estado,b.contipdoc_nombre " +
                     "FROM campusadmin.configuracion_conceptosapago a INNER JOIN campusadmin.configuracion_tipodocumentos b " +
                     "ON a.contipdoc_id=b.contipdoc_id ORDER BY a.conconpag_nombre";
             c = ConexionDB.AbrirConexion();
@@ -121,10 +142,11 @@ public class ConfiguracionConceptosPagoBO {
     
     public static ConfiguracionConceptosPagoVO MapeoConceptosPago(ResultSet rs) throws SQLException{
         ConfiguracionConceptosPagoVO conceptoPago = new ConfiguracionConceptosPagoVO();
-        conceptoPago.setConconpag_id(rs.getLong("contipdoc_id"));
+        conceptoPago.setConconpag_id(rs.getLong("conconpag_id"));
         conceptoPago.setContipdoc_id(rs.getLong("contipdoc_id"));
         conceptoPago.setConconpag_nombre(rs.getString("conconpag_nombre"));
-        conceptoPago.setConconpag_estado(rs.getInt("contipdoc_estado"));
+        conceptoPago.setConconpag_estado(rs.getInt("conconpag_estado"));
+        conceptoPago.setContipdoc_nombre(rs.getString("contipdoc_nombre"));
         return conceptoPago;
     }
     

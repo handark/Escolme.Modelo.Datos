@@ -2,13 +2,15 @@ package escolme.vortal.modelo.entidades;
 
 /**
  *
- * @author jose
+ * @author Jose Luis Orozco
  */
 public class ConfiguracionConceptosPagoVO {
     private long conconpag_id;
     private long contipdoc_id;
     private String conconpag_nombre;
     private int conconpag_estado;
+    
+    private String contipdoc_nombre;
 
     public long getConconpag_id() {
         return conconpag_id;
@@ -40,5 +42,13 @@ public class ConfiguracionConceptosPagoVO {
 
     public void setConconpag_estado(int conconpag_estado) {
         this.conconpag_estado = conconpag_estado;
+    }
+
+    public String getContipdoc_nombre() {
+        return contipdoc_nombre;
+    }
+
+    public void setContipdoc_nombre(String contipdoc_nombre) {
+        this.contipdoc_nombre = contipdoc_nombre;
     }
 }
