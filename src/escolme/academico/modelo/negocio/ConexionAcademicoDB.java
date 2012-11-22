@@ -13,9 +13,11 @@ public class ConexionAcademicoDB {
 
     private String CadenaConexion;
 
-    
+
     private ConexionAcademicoDB(){
         CadenaConexion = "jdbc:oracle:thin:academico/ACA0369@10.10.1.12:1521:escolme";
+        //CadenaConexion = "jdbc:oracle:thin:SYSTEM/ACA0369@10.10.1.49:1521:ESCOLMEPRUEBA";
+       //CadenaConexion = "jdbc:oracle:thin:SYSTEM/ACA0369@JOSE-W8:1521:escolme";
     }
     
     public static Connection AbrirConexion(){

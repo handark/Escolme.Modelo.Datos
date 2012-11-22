@@ -27,7 +27,7 @@ public class PagoLiquidacionBO {
         NumberFormat formato = NumberFormat.getInstance(Locale.ENGLISH);
         try {
             long id = ComunBO.GenerarLongID("PAGOLIQUIDACION", "PALI_ID");
-            String sql = "INSERT INTO PAGOLIQUIDACION(PALI_ID,LIQU_ID,PALI_VALOR,PALI_FECHA,PALI_ESTADO,PALI_REGISTRADOPOR,PALI_FECHACAMBIO,TIPL_ID,PALI_OBSERVACIONES) " + 
+            String sql = "INSERT INTO ACADEMICO.PAGOLIQUIDACION(PALI_ID,LIQU_ID,PALI_VALOR,PALI_FECHA,PALI_ESTADO,PALI_REGISTRADOPOR,PALI_FECHACAMBIO,TIPL_ID,PALI_OBSERVACIONES) " + 
                             "VALUES(?,?,?,?,?,?,?,?,?)";
             c = ConexionAcademicoDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
@@ -75,7 +75,7 @@ public class PagoLiquidacionBO {
         Connection c =null;
         try {
             liquidacion = new PagoLiquidacionAC();
-            String sql = "SELECT PAGOLIQUIDACION.*,TIPOPAGOLIQUIDACION.TIPL_DESCRIPCION FROM PAGOLIQUIDACION INNER JOIN TIPOPAGOLIQUIDACION ON PAGOLIQUIDACION.TIPL_ID=TIPOPAGOLIQUIDACION.TIPL_ID WHERE PAGOLIQUIDACION.PALI_ID='" + String.valueOf(PALI_ID) + "'";
+            String sql = "SELECT ACADEMICO.PAGOLIQUIDACION.*,ACADEMICO.TIPOPAGOLIQUIDACION.TIPL_DESCRIPCION FROM ACADEMICO.PAGOLIQUIDACION INNER JOIN ACADEMICO.TIPOPAGOLIQUIDACION ON ACADEMICO.PAGOLIQUIDACION.TIPL_ID=ACADEMICO.TIPOPAGOLIQUIDACION.TIPL_ID WHERE ACADEMICO.PAGOLIQUIDACION.PALI_ID='" + String.valueOf(PALI_ID) + "'";
             c = ConexionAcademicoDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -95,7 +95,7 @@ public class PagoLiquidacionBO {
         Connection c =null;
         try {
             liquidaciones = new ArrayList<PagoLiquidacionAC>();
-            String sql = "SELECT PAGOLIQUIDACION.*,TIPOPAGOLIQUIDACION.TIPL_DESCRIPCION FROM PAGOLIQUIDACION INNER JOIN TIPOPAGOLIQUIDACION ON PAGOLIQUIDACION.TIPL_ID=TIPOPAGOLIQUIDACION.TIPL_ID WHERE PAGOLIQUIDACION.LIQU_ID='" + String.valueOf(LIQU_ID) + "'";
+            String sql = "SELECT ACADEMICO.PAGOLIQUIDACION.*,ACADEMICO.TIPOPAGOLIQUIDACION.TIPL_DESCRIPCION FROM ACADEMICO.PAGOLIQUIDACION INNER JOIN ACADEMICO.TIPOPAGOLIQUIDACION ON ACADEMICO.PAGOLIQUIDACION.TIPL_ID=ACADEMICO.TIPOPAGOLIQUIDACION.TIPL_ID WHERE ACADEMICO.PAGOLIQUIDACION.LIQU_ID='" + String.valueOf(LIQU_ID) + "'";
             c = ConexionAcademicoDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();

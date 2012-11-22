@@ -17,6 +17,9 @@ public class PersonaNaturalGeneralAC {
     private String PENG_SEGUNDOAPELLIDO;
     private String PENG_SEGUNDONOMBRE;
     private String PEGE_DOCUMENTOIDENTIDAD;
+    private String PEGE_DIRECCION;
+    private String PEGE_TELEFONO;
+    
     private int PEGE_ID;
 
     public String getPENG_EMAILINSTITUCIONAL() {
@@ -73,5 +76,21 @@ public class PersonaNaturalGeneralAC {
 
     public void setPEGE_DOCUMENTOIDENTIDAD(String PEGE_DOCUMENTOIDENTIDAD) {
         this.PEGE_DOCUMENTOIDENTIDAD = PEGE_DOCUMENTOIDENTIDAD;
+    }
+
+    public String getPEGE_DIRECCION() {
+        return PEGE_DIRECCION;
+    }
+
+    public void setPEGE_DIRECCION(String PEGE_DIRECCION) {
+        this.PEGE_DIRECCION = PEGE_DIRECCION;
+    }
+
+    public String getPEGE_TELEFONO() {
+        return PEGE_TELEFONO;
+    }
+
+    public void setPEGE_TELEFONO(String PEGE_TELEFONO) {
+        this.PEGE_TELEFONO = PEGE_TELEFONO;
     }
 }

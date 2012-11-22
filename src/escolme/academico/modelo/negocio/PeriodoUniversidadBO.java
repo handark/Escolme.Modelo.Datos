@@ -1,6 +1,7 @@
 package escolme.academico.modelo.negocio;
 
 import escolme.academico.modelo.entidades.PeriodoUniversidadAC;
+import escolme.academico.modelo.entidades.PersonaNaturalGeneralAC;
 import escolme.vortal.modelo.negocio.UsuarioBO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,12 +31,34 @@ public class PeriodoUniversidadBO {
               periodos.add(MapeoUsuario(rs));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UsuarioBO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PeriodoUniversidadBO.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             ConexionAcademicoDB.CerrarConexion(c);
             return periodos;
         }
     }
+    
+    public static PeriodoUniversidadAC CargarPeriodoPorId(long PEUN_ID){
+        PeriodoUniversidadAC persona = null;
+        Connection c =null;
+        try{
+            persona = new PeriodoUniversidadAC();
+            String sql = "SELECT * FROM ACADEMICO.PERIODOUNIVERSIDAD INNER JOIN ACADEMICO.TIPOPERIODOACADEMICO b ON ACADEMICO.PERIODOUNIVERSIDAD.TPPA_ID=b.TPPA_ID WHERE ACADEMICO.PERIODOUNIVERSIDAD.PEUN_ID=" + PEUN_ID;
+            c = ConexionAcademicoDB.AbrirConexion();
+            PreparedStatement ps = c.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                persona = MapeoUsuario(rs);
+            }        
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(PeriodoUniversidadBO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+             ConexionAcademicoDB.CerrarConexion(c);
+            return persona;
+        }
+    }    
     
     public static PeriodoUniversidadAC MapeoUsuario(ResultSet rs) throws SQLException{
         PeriodoUniversidadAC periodo = new PeriodoUniversidadAC();

@@ -7,6 +7,11 @@ package escolme.academico.modelo.entidades;
 public class EstudiantePensumAC {
 
     private long PEGE_ID;
+    private String ESTP_CODIGOMATRICULA;
+    private long CATE_ID;
+    private long ESTP_PERIODOACADEMICO;
+    private long UNPR_ID;
+    
     
     //Relacion con PERSONAGENERAL
     private String PEGE_DOCUMENTOIDENTIDAD; 
@@ -63,5 +68,37 @@ public class EstudiantePensumAC {
 
     public void setPENG_SEGUNDOAPELLIDO(String PENG_SEGUNDOAPELLIDO) {
         this.PENG_SEGUNDOAPELLIDO = PENG_SEGUNDOAPELLIDO;
+    }
+
+    public String getESTP_CODIGOMATRICULA() {
+        return ESTP_CODIGOMATRICULA;
+    }
+
+    public void setESTP_CODIGOMATRICULA(String ESTP_CODIGOMATRICULA) {
+        this.ESTP_CODIGOMATRICULA = ESTP_CODIGOMATRICULA;
+    }
+
+    public long getCATE_ID() {
+        return CATE_ID;
+    }
+
+    public void setCATE_ID(long CATE_ID) {
+        this.CATE_ID = CATE_ID;
+    }
+
+    public long getESTP_PERIODOACADEMICO() {
+        return ESTP_PERIODOACADEMICO;
+    }
+
+    public void setESTP_PERIODOACADEMICO(long ESTP_PERIODOACADEMICO) {
+        this.ESTP_PERIODOACADEMICO = ESTP_PERIODOACADEMICO;
+    }
+
+    public long getUNPR_ID() {
+        return UNPR_ID;
+    }
+
+    public void setUNPR_ID(long UNPR_ID) {
+        this.UNPR_ID = UNPR_ID;
     }
 }

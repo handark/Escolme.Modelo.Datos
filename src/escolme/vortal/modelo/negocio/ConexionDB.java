@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package escolme.vortal.modelo.negocio;
 
 import java.sql.Connection;
@@ -23,8 +18,8 @@ public class ConexionDB {
 
     
     private ConexionDB(){
-        //CadenaConexion = "jdbc:postgresql://10.10.1.12:5432/escolme?user=postgres&password=Escolme2008";
-        CadenaConexion = "jdbc:postgresql://localhost:5432/escolme?user=postgres&password=juanita";
+       // CadenaConexion = "jdbc:postgresql://10.10.1.12:5432/escolme?user=postgres&password=Escolme2008";
+       CadenaConexion = "jdbc:postgresql://localhost:5432/escolme?user=postgres&password=juanita";
     }
     
     public static Connection AbrirConexion() throws ClassNotFoundException{
