@@ -9,6 +9,8 @@ public class ConfiguracionConceptosPagoVO {
     private long contipdoc_id;
     private String conconpag_nombre;
     private int conconpag_estado;
+    private long conconpag_valor;
+    private String conconpag_cuentacontable;
     
     private String contipdoc_nombre;
 
@@ -50,5 +52,27 @@ public class ConfiguracionConceptosPagoVO {
 
     public void setContipdoc_nombre(String contipdoc_nombre) {
         this.contipdoc_nombre = contipdoc_nombre;
+    }
+
+    public long getConconpag_valor() {
+        return conconpag_valor;
+    }
+
+    public void setConconpag_valor(long conconpag_valor) {
+        this.conconpag_valor = conconpag_valor;
+    }
+
+    /**
+     * @return the conconpag_cuentacontable
+     */
+    public String getConconpag_cuentacontable() {
+        return conconpag_cuentacontable;
+    }
+
+    /**
+     * @param conconpag_cuentacontable the conconpag_cuentacontable to set
+     */
+    public void setConconpag_cuentacontable(String conconpag_cuentacontable) {
+        this.conconpag_cuentacontable = conconpag_cuentacontable;
     }
 }

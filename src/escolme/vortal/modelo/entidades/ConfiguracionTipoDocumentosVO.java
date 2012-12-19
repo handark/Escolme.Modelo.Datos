@@ -10,6 +10,7 @@ public class ConfiguracionTipoDocumentosVO {
     private String contipdoc_nombre;
     private int contipdoc_estado;
     private int contipdoc_tipooperacion;
+    private int contipdoc_fijo;
     
     public long getContipdoc_id() {
         return contipdoc_id;
@@ -41,5 +42,19 @@ public class ConfiguracionTipoDocumentosVO {
 
     public void setContipdoc_tipooperacion(int contipdoc_tipooperacion) {
         this.contipdoc_tipooperacion = contipdoc_tipooperacion;
+    }
+
+    /**
+     * @return the contipdoc_fijo
+     */
+    public int getContipdoc_fijo() {
+        return contipdoc_fijo;
+    }
+
+    /**
+     * @param contipdoc_fijo the contipdoc_fijo to set
+     */
+    public void setContipdoc_fijo(int contipdoc_fijo) {
+        this.contipdoc_fijo = contipdoc_fijo;
     }
 }

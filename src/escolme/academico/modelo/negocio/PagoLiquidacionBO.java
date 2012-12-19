@@ -1,5 +1,6 @@
 package escolme.academico.modelo.negocio;
 
+import escolme.academico.modelo.entidades.LiquidacionAC;
 import escolme.academico.modelo.entidades.PagoLiquidacionAC;
 import escolme.modelo.ayudas.MensajesAjaxAY;
 import escolme.modelo.ayudas.Numero_a_Letra;
@@ -26,6 +27,7 @@ public class PagoLiquidacionBO {
         Connection c =null;
         NumberFormat formato = NumberFormat.getInstance(Locale.ENGLISH);
         try {
+            LiquidacionAC liquidacion = LiquidacionesBO.CargarLiquidacionPorId(pago.getLIQU_ID());
             long id = ComunBO.GenerarLongID("PAGOLIQUIDACION", "PALI_ID");
             String sql = "INSERT INTO ACADEMICO.PAGOLIQUIDACION(PALI_ID,LIQU_ID,PALI_VALOR,PALI_FECHA,PALI_ESTADO,PALI_REGISTRADOPOR,PALI_FECHACAMBIO,TIPL_ID,PALI_OBSERVACIONES) " + 
                             "VALUES(?,?,?,?,?,?,?,?,?)";
@@ -33,7 +35,7 @@ public class PagoLiquidacionBO {
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setLong(1, id);
             ps.setLong(2, pago.getLIQU_ID());
-            ps.setFloat(3, pago.getPALI_VALOR());
+            ps.setLong(3, pago.getPALI_VALOR());
             ps.setDate(4, pago.getPALI_FECHA());
             ps.setString(5, pago.getPALI_ESTADO());
             ps.setString(6, pago.getPALI_REGISTRADOPOR());
@@ -43,8 +45,14 @@ public class PagoLiquidacionBO {
             ps.executeUpdate();
             
             String estado = "PAGADO";
+            
+            float totalAbonos = liquidacion.getLIQU_VALORPAGADO() + pago.getPALI_VALOR();
+            
             if(pago.getTIPL_ID() == 405){
                 estado = "CARTERA";
+            }
+            if(totalAbonos >= (liquidacion.getLIQU_TOTALLIQUIDADO()- liquidacion.getLIQU_TOTALDESCUENTO())){
+                estado = "PAGADO";
             }
             
             sql = "UPDATE ACADEMICO.LIQUIDACION SET LIQU_ESTADO=?,LIQU_VALORPAGADO=LIQU_VALORPAGADO + ? WHERE LIQU_ID=?";
@@ -53,6 +61,9 @@ public class PagoLiquidacionBO {
             ps.setFloat(2, pago.getPALI_VALOR());
             ps.setLong(3, pago.getLIQU_ID());
             ps.executeUpdate();
+            
+            
+            MatriculaAcademicaBO.ActualizarEstadoMatriculaAcademica(liquidacion.getESTP_ID());
             
             resultado = new MensajesAjaxAY();
             resultado.setID(String.valueOf(id));
@@ -117,7 +128,7 @@ public class PagoLiquidacionBO {
         periodo.setPALI_ESTADO(rs.getString("PALI_ESTADO"));
         periodo.setPALI_ID(rs.getLong("PALI_ID"));
         periodo.setPALI_FECHA(rs.getDate("PALI_FECHA"));
-        periodo.setPALI_VALOR(rs.getFloat("PALI_VALOR"));
+        periodo.setPALI_VALOR(rs.getLong("PALI_VALOR"));
         periodo.setPALI_REGISTRADOPOR(rs.getString("PALI_REGISTRADOPOR"));
         periodo.setPALI_FECHACAMBIO(rs.getDate("PALI_FECHACAMBIO"));
         periodo.setTIPL_ID(rs.getLong("TIPL_ID"));

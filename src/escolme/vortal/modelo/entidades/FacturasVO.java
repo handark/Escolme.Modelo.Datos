@@ -1,6 +1,7 @@
 package escolme.vortal.modelo.entidades;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  *
@@ -20,10 +21,16 @@ public class FacturasVO {
     private Date fac_fechafactura;
     private long contipdoc_id;
     private long conforpag_id;
+    private long fac_documentoreferencia;
+    private long contipdoc_referencia;
+    private int contipdoc_tipooperacion;
+    private long concencos_id;
     
     private String fac_tipopersonatexto;
     private String contipdoc_nombre;
     private String fac_estadotexto;
+    private String concencos_nombre;
+    private List<FacturasPagosVO> facturaPagos;
     
     public long getFac_id() {
         return fac_id;
@@ -143,5 +150,71 @@ public class FacturasVO {
 
     public void setFac_estadotexto(String fac_estadotexto) {
         this.fac_estadotexto = fac_estadotexto;
+    }
+
+    public long getFac_documentoreferencia() {
+        return fac_documentoreferencia;
+    }
+
+    public void setFac_documentoreferencia(long fac_documentoreferencia) {
+        this.fac_documentoreferencia = fac_documentoreferencia;
+    }
+
+    public long getContipdoc_referencia() {
+        return contipdoc_referencia;
+    }
+
+    public void setContipdoc_referencia(long contipdoc_referencia) {
+        this.contipdoc_referencia = contipdoc_referencia;
+    }
+
+    public int getContipdoc_tipooperacion() {
+        return contipdoc_tipooperacion;
+    }
+
+    public void setContipdoc_tipooperacion(int contipdoc_tipooperacion) {
+        this.contipdoc_tipooperacion = contipdoc_tipooperacion;
+    }
+
+    /**
+     * @return the concencos_id
+     */
+    public long getConcencos_id() {
+        return concencos_id;
+    }
+
+    /**
+     * @param concencos_id the concencos_id to set
+     */
+    public void setConcencos_id(long concencos_id) {
+        this.concencos_id = concencos_id;
+    }
+
+    /**
+     * @return the concencos_nombre
+     */
+    public String getConcencos_nombre() {
+        return concencos_nombre;
+    }
+
+    /**
+     * @param concencos_nombre the concencos_nombre to set
+     */
+    public void setConcencos_nombre(String concencos_nombre) {
+        this.concencos_nombre = concencos_nombre;
+    }
+
+    /**
+     * @return the facturaPagos
+     */
+    public List<FacturasPagosVO> getFacturaPagos() {
+        return facturaPagos;
+    }
+
+    /**
+     * @param facturaPagos the facturaPagos to set
+     */
+    public void setFacturaPagos(List<FacturasPagosVO> facturaPagos) {
+        this.facturaPagos = facturaPagos;
     }
 }

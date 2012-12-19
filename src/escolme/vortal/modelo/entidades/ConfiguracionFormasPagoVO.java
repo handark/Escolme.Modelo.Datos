@@ -9,6 +9,7 @@ public class ConfiguracionFormasPagoVO {
     private long conforpag_id;
     private String conforpag_formapago;
     private int conforpag_estado;
+    private int conforpag_fija;
 
     public long getConforpag_id() {
         return conforpag_id;
@@ -32,6 +33,20 @@ public class ConfiguracionFormasPagoVO {
 
     public void setConforpag_estado(int conforpag_estado) {
         this.conforpag_estado = conforpag_estado;
+    }
+
+    /**
+     * @return the conforpag_fija
+     */
+    public int getConforpag_fija() {
+        return conforpag_fija;
+    }
+
+    /**
+     * @param conforpag_fija the conforpag_fija to set
+     */
+    public void setConforpag_fija(int conforpag_fija) {
+        this.conforpag_fija = conforpag_fija;
     }
     
 }

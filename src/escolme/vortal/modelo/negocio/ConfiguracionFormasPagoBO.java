@@ -26,7 +26,7 @@ public class ConfiguracionFormasPagoBO {
         Connection c =null;
         try{
             listaFormasPago = new ArrayList<>();
-            String sql = "SELECT conforpag_id,conforpag_formapago,conforpag_estado FROM campusadmin.configuracion_formaspago WHERE conforpag_estado=1 ORDER BY conforpag_formapago";
+            String sql = "SELECT conforpag_id,conforpag_formapago,conforpag_estado,conforpag_fija FROM campusadmin.configuracion_formaspago WHERE conforpag_estado=1 ORDER BY conforpag_formapago";
             c = ConexionDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -46,7 +46,7 @@ public class ConfiguracionFormasPagoBO {
         Connection c =null;
         try{
             listaRangosVencimiento = new ArrayList<>();
-            String sql = "SELECT conforpag_id,conforpag_formapago,conforpag_estado FROM campusadmin.configuracion_formaspago ORDER BY conforpag_formapago";
+            String sql = "SELECT conforpag_id,conforpag_formapago,conforpag_estado,conforpag_fija FROM campusadmin.configuracion_formaspago ORDER BY conforpag_formapago";
             c = ConexionDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -66,6 +66,7 @@ public class ConfiguracionFormasPagoBO {
         rangoVencimiento.setConforpag_id(rs.getLong("conforpag_id"));
         rangoVencimiento.setConforpag_formapago(rs.getString("conforpag_formapago"));
         rangoVencimiento.setConforpag_estado(rs.getInt("conforpag_estado"));
+        rangoVencimiento.setConforpag_fija(rs.getInt("conforpag_fija"));
         return rangoVencimiento;
     }
     
@@ -76,8 +77,8 @@ public class ConfiguracionFormasPagoBO {
             c = ConexionDB.AbrirConexion();
             if(rangoVencimiento.getConforpag_id() == 0){
                 rangoVencimiento.setConforpag_id(GenerarNuevoId());
-                sql = "INSERT INTO campusadmin.configuracion_formaspago(conforpag_id,conforpag_formapago,conforpag_estado) " + 
-                            " VALUES(?,?,?)";
+                sql = "INSERT INTO campusadmin.configuracion_formaspago(conforpag_id,conforpag_formapago,conforpag_estado,conforpag_fija) " + 
+                            " VALUES(?,?,?,0)";
                 ps = c.prepareStatement(sql);
                 ps.setLong(1, rangoVencimiento.getConforpag_id());
                 ps.setString(2, rangoVencimiento.getConforpag_formapago());

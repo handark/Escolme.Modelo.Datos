@@ -11,7 +11,7 @@ public class PagoLiquidacionAC {
 
     private long PALI_ID;
     private long LIQU_ID;
-    private float PALI_VALOR;
+    private long PALI_VALOR;
     private Date PALI_FECHA;
     private String PALI_ESTADO;
     private String PALI_REGISTRADOPOR;
@@ -38,11 +38,11 @@ public class PagoLiquidacionAC {
         this.LIQU_ID = LIQU_ID;
     }
 
-    public float getPALI_VALOR() {
+    public long getPALI_VALOR() {
         return PALI_VALOR;
     }
 
-    public void setPALI_VALOR(float PALI_VALOR) {
+    public void setPALI_VALOR(long PALI_VALOR) {
         this.PALI_VALOR = PALI_VALOR;
     }
 

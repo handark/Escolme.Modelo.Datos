@@ -18,7 +18,9 @@ public class UsuarioBO {
         UsuarioVO usuario = null;
         Connection c =null;
         try {
-            String sql = "select * from general.usuario WHERE usua_usuario='"+usua_usuario+"' AND usua_contrasena='"+usua_contrasena+"'";
+            String sql = "select general.usuario.* from general.usuario " + 
+                    "WHERE general.usuario.usua_usuario='"+usua_usuario+"' AND general.usuario.usua_contrasena='"+usua_contrasena+"' AND " +
+                    "general.usuario.usua_id IN (SELECT ur.usua_id FROM vortal.usuariorol ur WHERE ur.rol_id=123 OR ur.rol_id=124 OR ur.rol_id=125 OR ur.rol_id=126 OR ur.rol_id=127 OR ur.rol_id=132 OR ur.rol_id=148) ";
             c = ConexionDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
