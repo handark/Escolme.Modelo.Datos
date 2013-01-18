@@ -41,8 +41,7 @@ public class ProgramaBO {
         ProgramaAC programa = new ProgramaAC();
         programa.setPROG_NOMBRE(rs.getString("PROG_NOMBRE"));  
         programa.setPROG_ID(rs.getLong("PROG_ID"));
+        programa.setPENS_ID(rs.getLong("PENS_ID"));
         return programa;
     }
-    
-    
 }

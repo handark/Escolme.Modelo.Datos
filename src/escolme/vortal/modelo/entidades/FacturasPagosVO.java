@@ -16,6 +16,8 @@ public class FacturasPagosVO {
     private long facpag_valor;
     private String facpag_observaciones;
     private long conforpag_id;
+    private long facpag_referencia;
+    private int facpag_anulado;
     
     private String conforpag_formapago;
 
@@ -32,6 +34,34 @@ public class FacturasPagosVO {
     public void setConforpag_formapago(String conforpag_formapago) {
         this.conforpag_formapago = conforpag_formapago;
     }
+
+    /**
+     * @return the facpag_referencia
+     */
+    public long getFacpag_referencia() {
+        return facpag_referencia;
+    }
+
+    /**
+     * @param facpag_referencia the facpag_referencia to set
+     */
+    public void setFacpag_referencia(long facpag_referencia) {
+        this.facpag_referencia = facpag_referencia;
+    }
+
+    /**
+     * @return the facpag_anulado
+     */
+    public int getFacpag_anulado() {
+        return facpag_anulado;
+    }
+
+    /**
+     * @param facpag_anulado the facpag_anulado to set
+     */
+    public void setFacpag_anulado(int facpag_anulado) {
+        this.facpag_anulado = facpag_anulado;
+    }
     
     /**
      *  Definiciones de la tabla facturas_pagos
@@ -44,13 +74,15 @@ public class FacturasPagosVO {
         public final String campoFacpag_valor = "facpag_valor";
         public final String campoFacpag_observaciones = "facpag_observaciones";
         public final String campoConforpag_id = "conforpag_id";
+        public final String campoFacpag_referencia = "facpag_referencia";
+        public final String campoFacpag_anulado = "facpag_anulado";
         public final String tabla = "facturas_pagos";
         public final String esquema = "campusadmin";
         public String getTabla(){
             return esquema + "." + tabla;
         }
         public String getCampos(){
-            return String.format("%s,%s,%s,%s,%s,%s,%s", campoFacpag_id,campoFac_id,campoFac_secuencia,campoFacpag_fecha,campoFacpag_valor,campoFacpag_observaciones,campoConforpag_id);
+            return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", campoFacpag_id,campoFac_id,campoFac_secuencia,campoFacpag_fecha,campoFacpag_valor,campoFacpag_observaciones,campoConforpag_id,campoFacpag_referencia,campoFacpag_anulado);
         }
     }
 

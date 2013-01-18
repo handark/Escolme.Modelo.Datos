@@ -27,6 +27,8 @@ public class ProgramaAC {
     private String PROG_NOMBRE;
     private long PROM_ID;
     private String PROG_TIPOPROGRAMA;
+    
+    private long PENS_ID;
 
     public String getPROG_CODIGOICFES() {
         return PROG_CODIGOICFES;
@@ -178,6 +180,20 @@ public class ProgramaAC {
 
     public void setPROG_TIPOPROGRAMA(String PROG_TIPOPROGRAMA) {
         this.PROG_TIPOPROGRAMA = PROG_TIPOPROGRAMA;
+    }
+
+    /**
+     * @return the PENS_ID
+     */
+    public long getPENS_ID() {
+        return PENS_ID;
+    }
+
+    /**
+     * @param PENS_ID the PENS_ID to set
+     */
+    public void setPENS_ID(long PENS_ID) {
+        this.PENS_ID = PENS_ID;
     }
     
 }

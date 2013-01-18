@@ -1,6 +1,5 @@
 package escolme.vortal.modelo.negocio;
 
-import escolme.modelo.ayudas.MensajesAjaxAY;
 import escolme.vortal.modelo.entidades.FacturasDetalleVO;
 import escolme.vortal.modelo.entidades.FacturasTodoVO;
 import escolme.vortal.modelo.entidades.FacturasVO;
@@ -92,6 +91,27 @@ public class FacturasBO {
             String sql = "SELECT a.fac_id,a.fac_secuencia,a.fac_tipopersona,a.fac_nombrepersona,a.fac_identificacionpersona,a.conranven_dias,a.fac_estado,a.fac_total,a.fac_saldo,a.fac_fechafactura,a.contipdoc_id,a.fac_documentoreferencia,a.contipdoc_referencia,a.concencos_id,b.contipdoc_nombre,b.contipdoc_tipooperacion,c.concencos_nombre "+
                     "FROM (campusadmin.facturas a INNER JOIN campusadmin.configuracion_tipodocumentos b ON a.contipdoc_id=b.contipdoc_id) LEFT JOIN campusadmin.configuracion_centrocostos c ON a.concencos_id=c.concencos_id " +
                     "WHERE a.fac_id=" + String.valueOf(fac_id);
+            c = ConexionDB.AbrirConexion();
+            PreparedStatement ps = c.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                factura = MapeoFacturas(rs);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConfiguracionTipoDocumentosBO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConexionDB.CerrarConexion(c);
+            return factura;
+        }
+    }
+    
+    public static FacturasVO CargarFacturaPorReferencia(long fac_secuencia,long contipdoc_id){
+        FacturasVO factura = null;
+        Connection c =null;
+        try{
+            String sql = "SELECT a.fac_id,a.fac_secuencia,a.fac_tipopersona,a.fac_nombrepersona,a.fac_identificacionpersona,a.conranven_dias,a.fac_estado,a.fac_total,a.fac_saldo,a.fac_fechafactura,a.contipdoc_id,a.fac_documentoreferencia,a.contipdoc_referencia,a.concencos_id,b.contipdoc_nombre,b.contipdoc_tipooperacion,c.concencos_nombre "+
+                    "FROM (campusadmin.facturas a INNER JOIN campusadmin.configuracion_tipodocumentos b ON a.contipdoc_id=b.contipdoc_id) LEFT JOIN campusadmin.configuracion_centrocostos c ON a.concencos_id=c.concencos_id " +
+                    "WHERE a.fac_secuencia=" + fac_secuencia + " AND a.contipdoc_id=" + contipdoc_id;
             c = ConexionDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();

@@ -28,7 +28,7 @@ public class FacturasPagosBO {
         try {
             c = ConexionDB.AbrirConexion();
             pago.setFacpag_id(ConexionDB.GenerarNuevoId(def.esquema, def.tabla,def.campoFacpag_id));
-            sql = String.format("INSERT INTO %s(%s) VALUES(?,?,?,?,?,?,?)", def.getTabla(),def.getCampos());
+            sql = String.format("INSERT INTO %s(%s) VALUES(?,?,?,?,?,?,?,?,?)", def.getTabla(),def.getCampos());
             ps = c.prepareStatement(sql);
             ps.setLong(1, pago.getFacpag_id());
             ps.setLong(2, pago.getFac_id());
@@ -37,6 +37,8 @@ public class FacturasPagosBO {
             ps.setLong(5, pago.getFacpag_valor());
             ps.setString(6, pago.getFacpag_observaciones());
             ps.setLong(7, pago.getConforpag_id());
+            ps.setLong(8, pago.getFacpag_referencia());
+            ps.setInt(9, 0);
             ps.executeUpdate();
             
             factura = FacturasBO.CargarFacturaPorId(pago.getFac_id());
@@ -44,6 +46,15 @@ public class FacturasPagosBO {
             factura.setFac_saldo(nuevoSaldo);
             factura.setFac_estado(nuevoSaldo <= 0 ? 2:1);
             FacturasBO.ActualizarSaldoFactura(factura);
+            
+            //Si el pago es con Nota credito
+            if(pago.getConforpag_id()== 6 && pago.getFacpag_referencia() > 0){
+                factura = FacturasBO.CargarFacturaPorReferencia(pago.getFacpag_referencia(),3);
+                nuevoSaldo = factura.getFac_saldo() - pago.getFacpag_valor();
+                factura.setFac_saldo(nuevoSaldo);
+                factura.setFac_estado(nuevoSaldo <= 0 ? 2:1);
+                FacturasBO.ActualizarSaldoFactura(factura);                
+            }
         }
         catch(SQLException ex){
             factura = null;
@@ -86,6 +97,8 @@ public class FacturasPagosBO {
         pago.setFacpag_observaciones(rs.getString("facpag_observaciones"));
         pago.setConforpag_id(rs.getLong("conforpag_id"));
         pago.setConforpag_formapago(rs.getString("conforpag_formapago"));
+        pago.setFacpag_referencia(rs.getLong("facpag_referencia"));
+        pago.setFacpag_anulado(rs.getInt("facpag_anulado"));
         return pago;
     }       
     

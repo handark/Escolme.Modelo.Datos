@@ -19,12 +19,12 @@ import java.util.logging.Logger;
 public class EstudiantePensumBO {
 
     
-    public static EstudiantePensumAC CargarEstudiantePensumPorPegeId(long PEGE_ID){
+    public static EstudiantePensumAC CargarEstudiantePensumPorPegeId(long PEGE_ID,long PENS_ID){
         EstudiantePensumAC estudiante = null;
         Connection c =null;
         try{
             estudiante = new EstudiantePensumAC();
-            String sql = "SELECT ACADEMICO.ESTUDIANTEPENSUM.* FROM ACADEMICO.ESTUDIANTEPENSUM WHERE ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID='" + PEGE_ID + "'";
+            String sql = "SELECT ACADEMICO.ESTUDIANTEPENSUM.* FROM ACADEMICO.ESTUDIANTEPENSUM WHERE ACADEMICO.ESTUDIANTEPENSUM.PEGE_ID='" + PEGE_ID + "' AND ACADEMICO.ESTUDIANTEPENSUM.PENS_ID=" + PENS_ID;
             c = ConexionAcademicoDB.AbrirConexion();
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
